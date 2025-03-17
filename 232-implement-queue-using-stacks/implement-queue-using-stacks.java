@@ -15,26 +15,24 @@ class MyQueue {
     }
     
     public void push(int x) {
+        if (!stack2.isEmpty()) transferStackData(stack2, stack1);
         stack1.push(x);    
     }
     
     public int pop() {
+        if (!stack2.isEmpty()) return stack2.pop();
         transferStackData(stack1, stack2);
-        int elem = stack2.pop();
-        transferStackData(stack2, stack1);
-        return elem;
+        return stack2.pop();
     }
     
     public int peek() {
-        
+        if (!stack2.isEmpty()) return stack2.peek();
         transferStackData(stack1, stack2);
-        int elem = stack2.peek();
-        transferStackData(stack2, stack1);
-        return elem;
+        return stack2.peek();
     }
     
     public boolean empty() {
-        return stack1.isEmpty();
+        return stack1.isEmpty() && stack2.isEmpty();
     }
 }
 
