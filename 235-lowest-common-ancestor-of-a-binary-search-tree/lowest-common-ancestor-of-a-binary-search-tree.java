@@ -10,17 +10,12 @@
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        // Base Case
         if (root == null) return root;
-        if (root == p || root == q) {
-            return root;
-        }
+        if (root.val == p.val || root.val == q.val) return root;
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
-
-        if (left != null && right != null) return root; // root is the lca
-        else if (left != null || right != null) return left != null ? left : right;
-        else return null;
-        
+        if (left != null && right != null) return root;
+        else if (left != null) return left;
+        else return right;
     }
 }
