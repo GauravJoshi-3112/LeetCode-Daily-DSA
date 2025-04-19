@@ -14,16 +14,12 @@
  * }
  */
 class Solution {
-    int position = 0;
+    public int position = 1;
     public int kthSmallest(TreeNode root, int k) {
         if (root == null) return -1;
-        // We will be dealing with position
-        int left = kthSmallest(root.left, k);
-        if (left != -1) return left;
-        if (++position == k) return root.val;
-        int right = kthSmallest(root.right, k);
-        if (right != -1) return right;
-        return -1;
-    
+        int leftInOrder = kthSmallest(root.left, k);
+        if (leftInOrder != -1) return leftInOrder;
+        if (position++ == k) return root.val;
+        return kthSmallest(root.right, k);
     }
 }
