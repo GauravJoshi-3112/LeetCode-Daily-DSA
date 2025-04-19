@@ -13,41 +13,34 @@
  *     }
  * }
  */
-class Solution {
-    boolean flag = true;
-    public int[] isValidBSTHelp(TreeNode root) {
-        if (!flag) return new int [] {root.val, root.val};
-        if (root == null) return new int [] {Integer.MAX_VALUE, Integer.MIN_VALUE};
 
-        int [] left = null;
-        if (root.left != null) left = isValidBSTHelp(root.left);
-
-        int [] right = null;
-        if (root.right != null) right = isValidBSTHelp(root.right);
-
-        if ((left!= null && root.val <= left[1]) || (right != null && root.val >= right[0])) {
-            flag = false;
-            return new int [] {root.val,root.val};
-        } 
-
-        if (left == null) {
-            left = new int [] {root.val, root.val};
-        }
-
-        if (right == null) {
-            right = new int [] {root.val, root.val};
-        }
-
-        
-        int [] ans = new int[2];
-        ans[0] = Math.min(Math.min(left[0],right[0]),root.val);
-        ans[1] = Math.max(Math.max(left[1],right[1]),root.val); 
-        return ans;
+class Result {
+    boolean isValid;
+    int min;
+    int max;
+    Result (boolean isValid, int min, int max) {
+        this.isValid = isValid;
+        this.min = min;
+        this.max = max;
     }
+}
 
+class Solution {
+    public Result isBST(TreeNode root) {
+        if (root == null) return new Result(true,Integer.MAX_VALUE, Integer.MIN_VALUE);
+        Result left = isBST(root.left);
+        Result right = isBST(root.right);
+
+        if (!left.isValid || !right.isValid || (root.left != null && left.max >= root.val) || (root.right != null && right.min <= root.val)) {
+            return new Result(false,0,0);
+        }
+
+        int min = root.left != null ? left.min : root.val;
+        int max = root.right != null ? right.max : root.val;
+
+        return new Result(true, min, max);
+    }
     public boolean isValidBST(TreeNode root) {
-        // Base case
-        isValidBSTHelp(root);
-        return flag;
+        return isBST(root).isValid;
     }
 }
