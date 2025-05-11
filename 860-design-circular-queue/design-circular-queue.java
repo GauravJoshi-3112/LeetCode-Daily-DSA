@@ -1,70 +1,67 @@
-class ListNode {
+class Node {
     int data;
-    ListNode next;
-    ListNode(int data) {
-        this.data = data;
+    Node next;
+
+    public Node(int data, Node next) {
+        this.data= data;
+        this.next= next;
     }
-    ListNode(int data, ListNode next) {
-        this.next = next;
+
+    public Node(int data) {
+        this.data = data;
     }
 }
 
 class MyCircularQueue {
 
-    ListNode head = new ListNode(-1);
-    ListNode tail = head;
     int size = 0;
     int capacity = 0;
+    Node head;
+    Node tail;
 
     public MyCircularQueue(int k) {
-        capacity = k;
+        // Initialization 
+        this.capacity = k;
+        head = new Node(-1);
+        tail = head;
     }
     
     public boolean enQueue(int value) {
-        if (size >= capacity) return false;
-        else {
-            ListNode elem = new ListNode(value);
-            tail.next = elem;
-            tail = tail.next;
-            tail.next = head.next;
-            size++;
-            return true;
-        } 
+        if (isFull()) return false;
+        Node newNode = new Node(value);
+        this.tail.next = newNode;
+        this.tail = this.tail.next;
+        this.size++;
+        return true;
     }
     
     public boolean deQueue() {
-        if (size <= 0) return false; 
-        else {
-            if (head.next == tail) {
-                head.next = null;
-                tail = head;
-            } else {
-                head.next = head.next.next;
-                tail.next = head.next;
-            }
-            size--;
-            return true;
-        }
+        if (isEmpty()) return false;
+        this.head.next = this.head.next.next;
+        // We also need to check if Element getting Deleted is the Single Element
+        if (this.size == 1) tail = head;
+        this.size--;
+        return true;
     }
     
     public int Front() {
-        if (size == 0) return head.data;
+        // Check if size == 0
+        if (isEmpty()) return -1;
         else return head.next.data;
     }
     
     public int Rear() {
-        if (size == 0) return head.data;
-        else return tail.data;
+        // Check if size == 0
+        if (isEmpty()) return -1;
+        else return this.tail.data;
     }
     
     public boolean isEmpty() {
-        if (size == 0) return true;
-        else return false;
+        return this.size == 0;
     }
     
     public boolean isFull() {
-        if (size < capacity) return false;
-        else return true;
+        return this.size == this.capacity;
     }
 }
 
