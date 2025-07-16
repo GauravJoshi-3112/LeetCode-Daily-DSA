@@ -32,23 +32,21 @@ class Solution {
         while (!queue.isEmpty()) {
             int size = queue.size();
 
-            int leftIndex = Integer.MAX_VALUE;
-            int rightIndex = Integer.MIN_VALUE;
+            // An Empty size is not possible
+            int leftIndex = queue.peek().index;
+            int rightIndex = queue.peek().index;
 
             for(int i=0; i<size; i++) {
                 TreeNode node = queue.peek().node;
                 int index = queue.poll().index;
 
-                leftIndex = Math.min(leftIndex, index);
                 rightIndex = Math.max(rightIndex, index);
                 
                 if (node.left != null) queue.offer(new Pair(2*index + 1, node.left));
                 if (node.right != null) queue.offer(new Pair(2*index + 2, node.right));
             }
 
-            if (leftIndex == Integer.MAX_VALUE || rightIndex == Integer.MIN_VALUE) continue;
             maxwidth = Math.max(maxwidth, rightIndex - leftIndex + 1);
-
         }
         
         return maxwidth;
